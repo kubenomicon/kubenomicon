@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home - Kubenomicon - The Kubenomicon</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="./Kubenomicon.html" class="active">Home - Kubenomicon</a></li><li><a href="Initial_access.html"><strong>1.</strong> Initial access</a></li><li><ul class="section"><li><a href="Initial_access/Using_cloud_credentials.html"><strong>1.1.</strong> Using cloud credentials</a></li><li><a href="Initial_access/Compromised_image_in_registry.html"><strong>1.2.</strong> Compromised image In registry</a></li><li><a href="Initial_access/Kubeconfig_file.html"><strong>1.3.</strong> Kubeconfig file</a></li><li><a href="Initial_access/Application_vulnerability.html"><strong>1.4.</strong> Application vulnerability</a></li><li><a href="Initial_access/Exposed_sensitive_interfaces.html"><strong>1.5.</strong> Exposed sensitive interfaces</a></li><li><a href="./Initial_access/SSH_server_running_inside_container.html"><strong>1.6.</strong> SSH server running inside container</a></li></ul></li><li><a href="Execution.html"><strong>2.</strong> Execution</a></li><li><ul class="section"><li><a href="Execution/Exec_inside_container.html"><strong>2.1.</strong> Exec inside container</a></li><li><a href="Execution/New_container.html"><strong>2.2.</strong> New container</a></li><li><a href="./Execution/Application_exploit.html"><strong>2.3.</strong> Application exploit (RCE) 🔗</a></li><li><a href="Execution/Sidecar_injection.html"><strong>2.4.</strong> Sidecar injection</a></li></ul></li><li><a href="Persistence.html"><strong>3.</strong> Persistence</a></li><li><ul class="section"><li><a href="Persistence/Backdoor_container.html"><strong>3.1.</strong> Backdoor container</a></li><li><a href="Persistence/Writable_hostPath_mount.html"><strong>3.2.</strong> Writable hostPath mount</a></li><li><a href="Persistence/Kubernetes_cronjob.html"><strong>3.3.</strong> Kubernetes cronjob</a></li><li><a href="Persistence/Malicious_admission_controller.html"><strong>3.4.</strong> Malicious admission controller</a></li><li><a href="Persistence/Container_service_account.html"><strong>3.5.</strong> Container service account 🔗</a></li><li><a href="Persistence/Static_pods.html"><strong>3.6.</strong> Static pods</a></li></ul></li><li><a href="Privilege_escalation.html"><strong>4.</strong> Privilege escalation</a></li><li><ul class="section"><li><a href="Privilege_escalation/Privileged_container.html"><strong>4.1.</strong> Privileged container</a></li><li><a href="Privilege_escalation/Cluster-admin_binding.html"><strong>4.2.</strong> Cluster-admin binding</a></li><li><a href="Privilege_escalation/hostPath_mount.html"><strong>4.3.</strong> hostPath mount 🔗</a></li><li><a href="Privilege_escalation/Access_cloud_resources.html"><strong>4.4.</strong> Access cloud resources 🔗</a></li></ul></li><li><a href="Defense_evasion.html"><strong>5.</strong> Defense evasion</a></li><li><ul class="section"><li><a href="Defense_evasion/Clear_container_logs.html"><strong>5.1.</strong> Clear container logs</a></li><li><a href="Defense_evasion/Delete_events.html"><strong>5.2.</strong> Delete events</a></li><li><a href="Defense_evasion/Pod_name_similarity.html"><strong>5.3.</strong> Pod name similarity</a></li><li><a href="Defense_evasion/Connect_from_proxy_server.html"><strong>5.4.</strong> Connect from proxy server</a></li></ul></li><li><a href="Credential_access.html"><strong>6.</strong> Credential access</a></li><li><ul class="section"><li><a href="Credential_access/List_K8S_secrets.html"><strong>6.1.</strong> List K8S secrets</a></li><li><a href="Credential_access/Access_node_information.html"><strong>6.2.</strong> Access node information</a></li><li><a href="Credential_access/Container_service_account.html"><strong>6.3.</strong> Container service account</a></li><li><a href="Credential_access/Application_credentials_in_configuration_files.html"><strong>6.4.</strong> Application credentials in configuration files</a></li><li><a href="Credential_access/Access_managed_identity_credentials.html"><strong>6.5.</strong> Access managed identity credentials</a></li><li><a href="Credential_access/Malicious_admission_controller.html"><strong>6.6.</strong> Malicious admission controller 🔗</a></li></ul></li><li><a href="Discovery.html"><strong>7.</strong> Discovery</a></li><li><ul class="section"><li><a href="Discovery/Access_kubernetes_API_server.html"><strong>7.1.</strong> Access Kubernetes API server</a></li><li><a href="Discovery/Access_kubelet_API.html"><strong>7.2.</strong> Access Kubelet API</a></li><li><a href="Discovery/Network_mapping.html"><strong>7.3.</strong> Network mapping</a></li><li><a href="Discovery/Exposed_sensitive_interfaces.html"><strong>7.4.</strong> Exposed sensitive interfaces 🔗</a></li><li><a href="Discovery/Instance_metadata_API.html"><strong>7.5.</strong> Instance Metadata API 🔗</a></li></ul></li><li><a href="Lateral_movement.html"><strong>8.</strong> Lateral movement</a></li><li><ul class="section"><li><a href="Lateral_movement/Access_cloud_resources.html"><strong>8.1.</strong> Access cloud resources 🔗</a></li><li><a href="Lateral_movement/Container_service_account.html"><strong>8.2.</strong> Container service account 🔗</a></li><li><a href="Lateral_movement/Cluster_internal_networking.html"><strong>8.3.</strong> Cluster internal networking</a></li><li><a href="Lateral_movement/Application_credentials_in_configuration_files.html"><strong>8.4.</strong> Application credentials in configuration files 🔗</a></li><li><a href="Lateral_movement/Writable_hostPath_mount.html"><strong>8.5.</strong> Writable hostPath mount 🔗</a></li><li><a href="Lateral_movement/CoreDNS_poisoning.html"><strong>8.6.</strong> CoreDNS poisoning</a></li><li><a href="Lateral_movement/ARP_poisoning_and_IP_spoofing.html"><strong>8.7.</strong> ARP poisoning and IP spoofing</a></li></ul></li><li><a href="Collection.html"><strong>9.</strong> Collection</a></li><li><ul class="section"><li><a href="Collection/Images_from_a_private_registry.html"><strong>9.1.</strong> Images from a private registry</a></li><li><a href="Collection/Collecting_data_from_pod.html"><strong>9.2.</strong> Collecting data from pod</a></li></ul></li><li><a href="Impact.html"><strong>10.</strong> Impact</a></li><li><ul class="section"><li><a href="Impact/Data_destruction.html"><strong>10.1.</strong> Data destruction</a></li><li><a href="Impact/Resource_hijacking.html"><strong>10.2.</strong> Resource hijacking</a></li><li><a href="Impact/Denial_of_service.html"><strong>10.3.</strong> Denial of service</a></li></ul></li><li><a href="./Fundamentals.html"><strong>11.</strong> Fundamentals</a></li><li><ul class="section"><li><a href="./Fundamentals/Nodes.html"><strong>11.1.</strong> Nodes</a></li><li><a href="./Fundamentals/Services.html"><strong>11.2.</strong> Services</a></li><li><a href="./Fundamentals/etcd.html"><strong>11.3.</strong> etcd</a></li><li><a href="./Fundamentals/RBAC.html"><strong>11.4.</strong> RBAC</a></li><li><a href="./Fundamentals/Kubelet.html"><strong>11.5.</strong> Kubelet</a></li><li><a href="./Fundamentals/Namespaces.html"><strong>11.6.</strong> Namespaces</a></li><li><a href="./Fundamentals/Secrets.html"><strong>11.7.</strong> Secrets</a></li><li><a href="./Fundamentals/Interesting_files.html"><strong>11.8.</strong> Interesting Files</a></li></ul></li><li><a href="./Contributing.html">Contributing</a></li><li class="affix"><a href="Pentesting%20Kubernetes.html">Pentesting Kubernetes</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">The Kubenomicon</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./Kubenomicon.html#what-is-the-kubenomicon" id="what-is-the-kubenomicon"><h1>What is The Kubenomicon?</h1></a>
+<p><img src="../images/kubenomicon_cropped.png" alt="" /></p>
+<p>The Kubenomicon was born of a desire to understand more about Kubernetes from an offensive perspective. I found many great resources to aid in my journey, but I quickly realized:</p>
+<ol>
+<li>I will never be able to solely document every offensive and defensive Kubernetes technique on my own.</li>
+<li>Things in the Kubernetes world <a href="https://kubernetes.io/releases/release/">move really fast</a> and there are constantly new attack surfaces to explore.
+My solution to this is to start the Kubenomicon -- a place where offensive security techniques and how to defend against them can easily be documented via pull requests to the Kubenomicon GitHub.</li>
+</ol>
+<p>This project was heavily inspired by the <a href="https://microsoft.github.io/Threat-Matrix-for-Kubernetes/">Kubernetes Threat Matrix</a> from Microsoft which is a great starting point as it provides a framework to help understand some of the concepts in a <a href="https://attack.mitre.org/">MITRE ATTACK</a> style framework. The Microsoft Threat Matrix was explicitly not designed to be a playbook offensive for security professionals and thus it lacks the details necessary to actually exploit (and remediate) each attack in Kubernetes cluster.</p>
+<a class="header" href="./Kubenomicon.html#the-kubenomicon-threat-matrix" id="the-kubenomicon-threat-matrix"><h1>The Kubenomicon Threat Matrix</h1></a>
+<table><thead><tr><th> <a href="Initial_access.md">Initial Access</a>                                                            </th><th> <a href="Execution.md">Execution</a>                                       </th><th> <a href="Persistence.md">Persistence</a>                                                     </th><th> <a href="Privilege_escalation.md">Privilege Escalation</a>                            </th><th> <a href="Defense_evasion.md">Defense Evasion</a>                                       </th><th> <a href="Credential_access.md">Credential Access</a>                                                                               </th><th> <a href="Discovery.md">Discovery</a>                                                   </th><th> <a href="Lateral_movement.md">Lateral Movement</a>                                                                                </th><th> <a href="Collection.md">Collection</a>                                                      </th><th> <a href="Impact.md">Impact</a>                                  </th></tr></thead><tbody>
+<tr><td> <a href="./Initial_access/Using_cloud_credentials.md">Using Cloud Credentials</a>                         </td><td> <a href="./Execution/Exec_inside_container.md">Exec inside container</a>   </td><td> <a href="./Persistence/Backdoor_container.md">Backdoor Container</a>                         </td><td> <a href="./Privilege_escalation/Privileged_container.md">Privileged Container</a>     </td><td> <a href="./Defense_evasion/Clear_container_logs.md">Clear Container Logs</a>           </td><td> <a href="./Credential_access/List_K8S_secrets.md">List K8S secrets</a>                                                             </td><td> <a href="./Discovery/Access_kubernetes_API_server.md">Access Kubernetes API Server</a> </td><td> <a href="./Lateral_movement/Access_cloud_resources.md">Access Cloud Resources</a>                                                 </td><td> <a href="./Collection/Images_from_a_private_registry.md">Images from a private registry</a> </td><td> <a href="./Impact/Data_destruction.md">Data Destruction</a>     </td></tr>
+<tr><td> <a href="./Initial_access/Compromised_image_in_registry.md">Compromised image in registry</a>             </td><td> <a href="./Execution/New_container.md">New Container</a>                   </td><td> <a href="./Persistence/Writable_hostPath_mount.md">Writable hostPath mount</a>               </td><td> <a href="./Privilege_escalation/Cluster-admin_binding.md">Cluster-admin binding</a>   </td><td> <a href="./Defense_evasion/Delete_events.md">Delete Events</a>                         </td><td> <a href="./Credential_access/Access_node_information.md">Access Node Information</a>                                               </td><td> <a href="./Discovery/Access_kubelet_API.md">Access Kubelet API</a>                     </td><td> <a href="./Lateral_movement/Container_service_account.md">Container Service Account</a>                                           </td><td> <a href="./Collection/Collecting_data_from_pod.md">Collecting Data From Pod</a>             </td><td> <a href="./Impact/Resource_hijacking.md">Resource Hijacking</a> </td></tr>
+<tr><td> <a href="./Initial_access/Kubeconfig_file.md">Kubeconfig File</a>                                         </td><td> <a href="./Execution/Application_exploit.md">Application Exploit (RCE)</a> </td><td> <a href="./Persistence/Kubernetes_cronjob.md">Kubernetes Cronjob</a>                         </td><td> <a href="./Privilege_escalation/hostPath_mount.md">hostPath Mount</a>                 </td><td> <a href="./Defense_evasion/Pod_name_similarity.md">Pod Name Similarity</a>             </td><td> <a href="./Credential_access/Container_service_account.md">Container Service Account</a>                                           </td><td> <a href="./Discovery/Network_mapping.md">Network Mapping</a>                           </td><td> <a href="./Lateral_movement/Cluster_internal_networking.md">Cluster Internal Networking</a>                                       </td><td>                                                                                  </td><td> <a href="./Impact/Denial_of_service.md">Denial of Service</a>   </td></tr>
+<tr><td> <a href="./Initial_access/Application_vulnerability.md">Application Vulnerability</a>                     </td><td> <a href="./Execution/Sidecar_injection.md">Sidecar Injection</a>           </td><td> <a href="./Persistence/Malicious_admission_controller.md">Malicious Admission Controller</a> </td><td> <a href="./Privilege_escalation/Access_cloud_resources.md">Access Cloud Resources</a> </td><td> <a href="./Defense_evasion/Connect_from_proxy_server.md">Connect From Proxy Server</a> </td><td> <a href="./Credential_access/Application_credentials_in_configuration_files.md">Application Credentials In Configuration Files</a> </td><td> <a href="./Discovery/Exposed_sensitive_interfaces.md">Exposed Sensitive Interfaces</a> </td><td> <a href="./Lateral_movement/Application_credentials_in_configuration_files.md">Application Credentials In Configuration Files</a> </td><td>                                                                                  </td><td>                                                      </td></tr>
+<tr><td> <a href="./Initial_access/Exposed_sensitive_interfaces.md">Exposed Sensitive Interfaces</a>               </td><td>                                                                 </td><td> <a href="./Persistence/Container_service_account.md">Container Service Account</a>           </td><td>                                                                            </td><td>                                                                             </td><td> <a href="./Credential_access/Access_managed_identity_credentials.md">Access Managed Identity Credentials</a>                       </td><td> <a href="./Discovery/Instance_metadata_API.md">Instance Metadata API</a>               </td><td> <a href="./Lateral_movement/Writable_hostPath_mount.md">Writable hostpath Mount</a>                                               </td><td>                                                                                  </td><td>                                                      </td></tr>
+<tr><td> <a href="./Initial_access/SSH_server_running_inside_container.md">SSH server running inside container</a> </td><td>                                                                 </td><td> <a href="./Persistence/Static_pods.md">Static Pods</a>                                       </td><td>                                                                            </td><td>                                                                             </td><td> <a href="./Credential_access/Malicious_admission_controller.md">Malicious Admission Controller</a>                                 </td><td>                                                                             </td><td> <a href="./Lateral_movement/CoreDNS_poisoning.md">CoreDNS Poisoning</a>                                                           </td><td>                                                                                  </td><td>                                                      </td></tr>
+<tr><td>                                                                                                </td><td>                                                                 </td><td>                                                                                   </td><td>                                                                            </td><td>                                                                             </td><td>                                                                                                                         </td><td>                                                                             </td><td> <a href="./Lateral_movement/ARP_poisoning_and_IP_spoofing.md">ARP Poisoning and IP Spoofing</a>                                   </td><td>                                                                                  </td><td>                                                      </td></tr>
+</tbody></table>
+<a class="header" href="./Kubenomicon.html#prior-work" id="prior-work"><h1>Prior work</h1></a>
+<p>I am far from the first person to come up with the idea to document this information. Many great projects exist that take a similar approach to this. Most notably what inspired this project was the <a href="https://microsoft.github.io/Threat-Matrix-for-Kubernetes/">Microsoft Kubernetes Threat Matrix</a>. Additionally, late into putting this project together I discovered this amazing <a href="https://kubernetes-threat-matrix.redguard.ch/">Threat matrix from RedGuard</a>. Some other projects that served as inspiration for this include:</p>
+<ul>
+<li><a href="https://cloud.hacktricks.xyz/pentesting-cloud/kubernetes-security">Kubernetes Hacktricks</a></li>
+</ul>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+
+                
+                    <a rel="next" href="Initial_access.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+
+            
+                <a href="Initial_access.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>
