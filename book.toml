@@ -4,3 +4,4 @@ language = "en"
 multilingual = false
 src = "src"
 title = "The Kubenomicon"
+additional-css = ["theme/css/general.css"]
