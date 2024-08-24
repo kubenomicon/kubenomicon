@@ -20,7 +20,7 @@ This project is only as useful as we (the community) make it. Things will change
 
 ## Structure
 This project is created using [mdbook](https://github.com/rust-lang/mdBook) and compiled using Github Actions. If you would like to make a change, here is what I would recommend:
-1. Clone this repository: `git clone https://github.com/grahamhelton/grahamhelton.github.io`
+1. Clone this repository: `git clone https://github.com/kubenomicon/kubenomicon.git`
 2. Host a local site with mdbook `mdbook serve`
 3. Make any changes to the files hosted in `./src`
     - If you wish to add a new item to the sidebar, you can do so by editing `./src/SUMMARY.md`
