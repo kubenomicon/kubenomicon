@@ -65,4 +65,79 @@ Upon switching to the `dev` context using `kubectl config use-context dev`, and 
 
 
 # Defending
-> Pull requests needed ❤️ 
+
+Assuming an attacker has gained access into your cluster, they are still limited to the permissions granted to the credentials within the kubeconfig file. This is your **most crucial line of defense:**
+
+- **Minimize Cluster-Admin Kubeconfigs:** Never have more than a few absolutely necessary kubeconfigs with cluster-admin privileges.
+
+```yaml
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority-data: <CA_CERTIFICATE_DATA>
+    server: <YOUR_KUBERNETES_API_SERVER_ADDRESS>
+  name: my-cluster
+contexts:
+- context:
+    cluster: my-cluster
+    user: namespace-admin
+    namespace: my-namespace 
+  name: namespace-admin-context
+current-context: namespace-admin-context
+users:
+- name: namespace-admin
+  user:
+    token: <SERVICE_ACCOUNT_TOKEN>
+```
+
+Above is an example of a really BAD kubeconfig file found by a threat actor, a kubeconfig file with cluster-admin privileges grants essentially unlimited power over your Kubernetes cluster. It's like having the root password for your entire infrastructure.
+
+Let’s take a look at the cluster-role and cluster-rolebinding for the `namespace-admin` user:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: my-namespace
+  name: namespace-admin
+rules:
+- apiGroups: ["", "apps", "extensions", "batch"] # Include common API groups
+  resources: ["*"] # Allow access to all resources within the namespace
+  verbs: ["*"]     # Allow all actions (get, list, create, update, delete, etc.)
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: namespace-admin-binding
+  namespace: my-namespace
+subjects:
+- kind: ServiceAccount
+  name: namespace-admin  # Match the ServiceAccount name in your kubeconfig
+  namespace: my-namespace
+roleRef:
+  kind: Role
+  name: namespace-admin
+  apiGroup: rbac.authorization.k8s.io
+```
+
+**Excessive Permissions:**
+
+* The `namespace-admin` user doesn't need cluster-wide permissions. 
+* They should only have access to resources within their designated namespace (`my-namespace`).
+
+**Security Risk:**
+
+* If the `namespace-admin` kubeconfig is compromised, the attacker inherits these excessive permissions, enabling them to:
+
+    * **Manipulate any resource:** Create, delete, or modify pods, deployments, services, etc., disrupting applications or deploying malicious workloads.
+    * **Steal sensitive data:** Access secrets containing passwords, API keys, and other confidential information.
+    * **Alter cluster settings:** Modify security policies, resource quotas, and network configurations, potentially compromising the entire cluster's integrity.
+
+**Best Practice:**
+
+* **Principle of Least Privilege:** Grant only the minimum necessary permissions. Create Roles and RoleBindings specific to the `my-namespace` namespace, restricting the `namespace-admin` user's access accordingly.
+* **Limit Cluster-Admin:** Minimize the number of kubeconfigs with cluster-admin privileges and protect them with utmost care.
+
+By adhering to these principles, you significantly reduce the potential damage from compromised credentials, even if an attacker manages to gain initial access to your cluster.
