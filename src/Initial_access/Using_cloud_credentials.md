@@ -6,4 +6,8 @@ Gaining access to the web application interface of managed Kubernetes services s
 
 
 # Defending
-> Pull requests needed ❤️ 
+
+Defending your cluster from compromised cloud credentials would require one to plan, considering mandatory training for the wider team about Social Engineering is crucial. Mistakes made by legitimate users are much less predictable, making it harder for defensive systems to identify and thwart threat actors as opposed to a malware-based intrusion. 
+
+Utilising password managers like Vault have proven to be a more secure way of handling sensitive passwords, this prevents threat actors from scanning for keystrokes in an already compromised machine/ env making it harder for them to make lateral movements.
+

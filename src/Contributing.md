@@ -7,3 +7,8 @@ This project is only as useful as we (the community) make it. Things will change
 I'm 100% sure that I have gotten some things wrong in this project. My hope is that by putting this together, we can get the ball rolling on creating more comprehensive documentation for attacking a Kubernetes cluster. The more we're able to document these attacks, the more easily we will be able to communicate the risk of an insecure cluster.
 
 Are you new to the security industry but you've found something about this project lacking? Contributing to open source projects is a fantastic way to [demonstrate your competence](https://grahamhelton.com/blog/certificationindustrialcomplex/) for future employers to see. Contributions that keep things up to date is always appreciated!
+
+Contributors:
+
+[Graham Helton](https://grahamhelton.com/)
+[Saed Farah](https://uk.linkedin.com/in/saedf)
