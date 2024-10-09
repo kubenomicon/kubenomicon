@@ -96,5 +96,5 @@ fi
 ```
 
 
-![](../videos/Trivy-demo.mov)
+![](../videos/demo-trivy.mov)
 

@@ -35,7 +35,7 @@ An important point to know: If a later rule has the same conditions as an earlie
 
 Let’s take a look for ourselves. We’re going to deliberately set off the alerts using Falco:
 
-![](../videos/falco-demo.mov)
+![](../videos/demo-falco.mov)
 
 **The Setup**
 
