@@ -14,4 +14,60 @@ Exec-ing into a pod is simple: `kubectl exec <pod_name> -- <command_to_run>`. Th
 
 
 # Defending
-> Pull requests needed ❤️ 
+
+To bolster the security of your Kubernetes environment, it's essential to embrace a Zero Trust model. This means inherently trusting no user or service, requiring verification at every access attempt.  This principle should guide your approach when defining roles and role bindings for both automated systems and human users, leveraging the `Roles` and `RoleBindings` resources within Kubernetes.  For a detailed walkthrough of this process, refer to the "Defending" section further down in this document.
+
+While prevention is crucial, a robust detection strategy is equally important.  Fortunately, powerful open-source tools like Falco are readily available to help you monitor and identify suspicious activities within your cluster.
+
+Falco is a runtime security tool that monitors container activity and detects anomalous behavior.
+
+Falco can run as a:
+
+* DaemonSet
+* Deployment
+* Sidecar container (less common)
+
+The most common and recommended approach is to run as a DaemonSet — a service —  as it allows Falco to observe the activity of all containers across your infrastructure.
+
+The `/etc/falco` directory is a crucial location for configuring and operating. The file you should generally only modify is `falco_rules.local.yaml`.
+
+An important point to know: If a later rule has the same conditions as an earlier rule, the later rule takes precedence. This means it can effectively "override" the earlier rule.
+
+Let’s take a look for ourselves. We’re going to deliberately set off the alerts using Falco:
+
+![](../videos/falco-demo.mov)
+
+**The Setup**
+
+*   **Two terminals:** 
+    1. One terminal displays the Falco logs (`journalctl -fu falco`), providing real-time insights into security events. 
+    2. The other terminal is used to interact with your Kubernetes cluster.
+
+*   **Falco monitoring:** Falco is running in the background, as a DaemonSet, monitoring your Kubernetes cluster for suspicious activities.
+
+**The Actions**
+
+1.  **Create a pod:** I used `kubectl create` to create a new pod in the cluster. Falco saw this API request to the Kubernetes API server.
+2.  **Exec into the pod:** I used `kubectl exec` to get a shell inside the running container. Falco detected this action as potentially risky, as it involves accessing a container's internal environment.
+3.  **Delete the pod:** I used `kubectl delete` to remove the pod. Falco observed this action as part of its monitoring of the Kubernetes API server.
+
+**Why Falco reacted**
+
+Falco has built-in rules that trigger on these actions —  as we discussed above — because they can be indicative of malicious activity:
+
+*   **Pod Creation:** Attackers might try to create pods to run malicious workloads.
+*   **Exec into a pod:** This is a common technique for attackers to gain access to a container and execute commands.
+*   **Pod Deletion:** Attackers might delete pods to disrupt services or cover their tracks.
+
+**The Output**
+
+In the terminal running `journalctl -fu falco`, you see Falco's output, which likely includes:
+
+*   **Timestamp:** When the event occurred.
+*   **Rule:** The Falco rule that was triggered (e.g., a rule related to `kubectl exec`).
+*   **Severity:** The severity level of the event (e.g., "warning" or "critical").
+*   **Details:** Information about the event, such as the pod name, namespace, user, and the specific command executed.
+
+**The Takeaway**
+
+This demo effectively illustrates how Falco can detect potentially risky actions within your Kubernetes environment. By monitoring the Kubernetes API server and container activity, Falco provides valuable visibility and helps you identify and respond to security threats.
