@@ -53,11 +53,41 @@ If there are multiple containers in a pod you can list them using `kubectl get p
 
 ![](../images/Pasted%20image%2020240321134104.png)
 
+## How it Works
+
+1. **Gaining Access:** Attackers exploit vulnerabilities or weak credentials to access the Kubernetes cluster.
+2. **Injecting the Sidecar:** They modify the pod's deployment configuration to include a malicious sidecar.
+3. **Malicious Activity:** The injected sidecar performs actions like:
+    * **Data Exfiltration:** Stealing sensitive data.
+    * **Traffic Interception:** Intercepting and manipulating network traffic.
+    * **Cryptocurrency Mining:** Utilizing pod resources for mining.
+    * **Launching Further Attacks:** Using the pod as a base for further attacks.
+
+![](../video/Sidecar-Injection.mov)
+
+
+## Dangers of Sidecar Injection
+
+* **Stealth:** Difficult to detect as malicious sidecars run alongside legitimate ones.
+* **Resource Abuse:** Attackers can consume pod resources, impacting application performance.
+* **Lateral Movement:** Compromised pods can be used to attack other parts of the cluster.
+
+
 #### Defending
 From [Microsoft](https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/Sidecar%20Injection/):
 - Adhear to least-privielge principles
 - Restrict over permissive containers
 - Gate images deployed to kubernetes clusters
 
-> Pull requests needed ❤️ 
+## Mitigating Sidecar Injection Attacks
+
+* **Restricting Cluster Access:** Implement strong authentication and authorization.
+* **Network Policies:** Control communication between pods to prevent unauthorized access.
+* **Resource Limits:** Set resource limits for pods to prevent abuse.
+* **Security Context:** Restrict container privileges using security contexts.
+* **Admission Controllers:** Enforce security policies during pod deployments.
+* **Security Monitoring:** Detect suspicious activities within the cluster.
+* **Regular Security Audits:** Identify and address vulnerabilities in the Kubernetes environment.
+
+By understanding and mitigating these risks, organizations can enhance the security of their Kubernetes deployments and protect their applications and data.
 
