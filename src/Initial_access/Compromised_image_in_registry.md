@@ -52,12 +52,12 @@ In the Figure above we scan a tar file, from an alpine image we found.
 You could also scan an unpacked container image filesystem. 
 
 ```bash
-First export the image as an unpacked container filesystem:
-`docker export $(docker create alpine:3.10.2) | tar -C /tmp/rootfs -xvf -`
+# First export the image as an unpacked container filesystem:
+docker export $(docker create alpine:3.10.2) | tar -C /tmp/rootfs -xvf -
+```
+# Then run the scan: 
 
-Then run the scan 
-
-`trivy fs /tmp/rootfs`
+trivy fs /tmp/rootfs
 ```
 
 Vulnerability scanning tools are among other defensive mechanisms, would allow one to have visibility into the exact severity of the vulnerability that a malicious image may have, such as backdoors or unrelated malicious packages thus allowing one to understand deeper the latest nuanced attack vectors threat actors are utilising.
@@ -67,7 +67,7 @@ As a bonus I’ll share a very basic shell script that can be stored within the 
 As a pre-requisite, you need to have trivy installed as a package -- refer back to the docs referenced above. 
 
 ```bash
-`#!/bin/bash`
+#!/bin/bash
 
 # Presenting the options to the admin on what they would like to scan
 echo "1. Image"
@@ -92,6 +92,9 @@ elif [ $op -eq 4 ]
 then
 read -p "Enter path to unpacked container image filesystem: " fs
 trivy fs $fs
-fi`
+fi
 ```
+
+
+![](../videos/Trivy-demo.mov)
 
