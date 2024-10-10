@@ -139,12 +139,71 @@ Now all you need to do is ssh into the node (assuming there is no firewalls in t
 
 ![](../images/Pasted%20image%2020240331195726.png)
 
+## Defending
 
-# Defending
-- From [microsoft](https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/Writable%20hostPath%20mount/):
-	- Restrict over permissive containers using something such as [[admission controller]]s
-	- Restrict file and directory permissions by ensuring mounts are read only
-	- Restrict containers using linux security modules such as [[AppArmor]] or [[SELinux]]
-	- Ensure that pods meet defined [[pod security standards]]. Baseline or restricted will stop volume mounts.
+Exploiting writable hostPath mounts can severely compromise Kubernetes security.  A robust defense requires a multi-layered approach with specific tools and configurations.
 
-> Pull requests needed ❤️ 
+**1. Minimize and Restrict hostPath Usage:**
+
+- **Avoid Unnecessary hostPath Volumes:** The most effective defense is minimizing hostPath volume use. Explore alternative volume types first.
+- **Principle of Least Privilege:** If unavoidable, mount only essential directories/files, not the entire node filesystem.
+- **Enforce Read-Only Access:** Configure hostPath volumes as read-only (`readOnly: true` in the volume definition) to prevent container modifications on the host.
+
+**2.  Secure Container Runtimes with seccomp:**
+
+- **System Call Filtering:** seccomp (Secure Computing Mode) is a Linux kernel feature that filters system calls available to a process. By applying a seccomp profile to your containers, you can restrict their actions, even with a writable hostPath mount.
+- **Example seccomp Profile:** A profile can be defined in JSON format. Here's a basic JSON example denying `chmod` system call:
+
+```json
+{
+  "defaultAction": "SCMP_ACT_ALLOW",
+  "syscalls": [
+    {
+      "name": "chmod",
+      "action": "SCMP_ACT_ERRNO"
+    }
+  ]
+}
+
+```
+
+This profile allows all system calls by default (`SCMP_ACT_ALLOW`) but returns an error (`SCMP_ACT_ERRNO`) if the container tries to use `chmod`. More complex rules can be defined to further restrict access based on arguments and other conditions.
+
+3. **Harden Node Security with AppArmor:**
+
+    **Mandatory Access Control:** AppArmor provides Mandatory Access Control (MAC) for confining container processes. Define AppArmor profiles to restrict file system access, capabilities, and network operations.
+
+    **Example AppArmor Profile:**
+    ```
+    #include <tunables/global>
+
+    profile k8s-apparmor-example flags=(attach_bpf) {
+      #include <abstractions/base>
+
+      # Allow writing to the application's specific directory
+      /var/lib/saeds-application/** rw,
+
+      # Deny write access to other directories on the host
+      deny /var/lib/** w,
+      deny /etc/** w,
+
+      # Other rules...
+    }
+    ```
+    This profile allows the container to write to `/var/lib/my-application/` but denies write access to other directories under `/var/lib/` and `/etc/`.
+
+4. **Monitoring and Detection:**
+
+    **Monitor for Suspicious Activity:** Employ monitoring and intrusion detection systems to detect anomalies related to hostPath mounts (e.g., access to sensitive files).
+
+    **Audit Logs:** Analyze audit logs for unauthorized access or modification of hostPath volumes.
+
+5. **Security Best Practices:**
+
+    **Keep Kubernetes Updated:** Regularly update your cluster and nodes to patch vulnerabilities.
+
+    **Secure Container Images:** Use trusted and verified container images.
+
+    **Network Segmentation:** Isolate your Kubernetes cluster to limit the impact of a compromise.
+
+By combining these techniques, you can significantly mitigate the risks associated with writable hostPath mounts and strengthen your Kubernetes security posture.
