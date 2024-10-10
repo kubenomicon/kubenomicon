@@ -58,6 +58,5 @@ After the manifest has been applied, the environment variables are accessible in
 
 #### Defending
 # Defending
-Use RBAC to ensure that pods cannot be created unless absolutely necessary. Secrets are scoped to namespaces so ensuring namespaces are properly used is important. 
 
-> Pull requests needed ❤️ 
+Protecting your cluster from unauthorized container creation is paramount.  Imagine attackers deploying malicious containers that consume your resources, disrupt your applications, or steal sensitive data. To prevent this, you need to establish robust security measures. The ["Defending" section of the Exec inside container document](./Exec_inside_container.md) provides a comprehensive guide to securing your cluster, including implementing role-based access control (RBAC), security runtime tools like Falco, as well as a video demo of it in action.  Don't leave your cluster vulnerable—take action now.
