@@ -5,18 +5,11 @@ on:
     branches:
       - main
     paths:
-      - 'book/**'
-    
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+      - 'src/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      MDBOOK_VERSION: 0.4.36
     steps:
       - uses: actions/checkout@v4
       - name: Install mdBook
@@ -26,16 +19,17 @@ jobs:
           cargo install --version ${MDBOOK_VERSION} mdbook
       - name: Build with mdBook
         run: mdbook build
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --acl public-read --follow-symlinks --delete
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-        SOURCE_DIR: 'book'
+      - uses: actions/checkout@v4
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+          SOURCE_DIR: 'book'
