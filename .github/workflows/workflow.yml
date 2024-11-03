@@ -3,7 +3,9 @@ name: Upload Website
 on:
   push:
     branches:
-    - main 
+      - main
+    paths:
+      - 'book/**'
     
 permissions:
   contents: write
