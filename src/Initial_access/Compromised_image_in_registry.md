@@ -1,7 +1,7 @@
 # Compromised image In registry
-A compromised container image in a trusted registry can be used to gain initial access to a Kubernetes cluster if you're able to push images to it. This attack path is fundamentally the same concept as [Persistence -> Backdoor_container](http://localhost:3000/Persistence/Backdoor_container.html).
+A compromised container image in a trusted registry can be used to gain initial access to a Kubernetes cluster if you're able to push images to it. This attack path is fundamentally the same concept as [Persistence -> Backdoor_container](../Persistence/Backdoor_container.html).
 
-A compromised image in a container registry is the logical next step to [Persistence -> Backdoor_container](http://localhost:3000/Persistence/Backdoor_container.html). If an attacker is able to upload or tamper with the "trusted" images in a registry such as [Harbor](https://github.com/goharbor/harbor), they can fully control the environment the application is operating within. This is analogous downloading an ubuntu ISO that an attacker had tampered with and using it as your base operating system.
+A compromised image in a container registry is the logical next step to [Persistence -> Backdoor_container](../Persistence/Backdoor_container.html). If an attacker is able to upload or tamper with the "trusted" images in a registry such as [Harbor](https://github.com/goharbor/harbor), they can fully control the environment the application is operating within. This is analogous downloading an ubuntu ISO that an attacker had tampered with and using it as your base operating system.
 
 ![](Pasted%20image%2020240331200054.png)
 
