@@ -22,4 +22,23 @@ From microsoft:
 - Ensure that pods meet defined pod security standards: restrict privileged containers using pod security standards
 - Gate images deployed to Kubernetes cluster: Restricted deployment of new containers from trusted supply chains
 
+## seccomp Profiles
+We can restrict the system calls available to the container through seccomp profiles, which will prevent many of the container breakout methods used due to the availability of risky system calls (e.g. SYS_PTRACE used to inject malicious processes, SYS_MODULE to load malicious kernel modules into the container).
+The default seccomp profile [blocks a significant number](https://docs.docker.com/engine/security/seccomp/#significant-syscalls-blocked-by-the-default-profile) of system calls used in container breakouts that will typically be present within privileged containers.
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: seccomp-protected-pod
+  labels:
+    app: seccomp-protected-pod
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: seccomp-container
+    image: nginx:latest
+```
+
 > Pull requests needed ❤️ 

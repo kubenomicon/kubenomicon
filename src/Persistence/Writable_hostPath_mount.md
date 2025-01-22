@@ -144,7 +144,21 @@ Now all you need to do is ssh into the node (assuming there is no firewalls in t
 - From [microsoft](https://microsoft.github.io/Threat-Matrix-for-Kubernetes/techniques/Writable%20hostPath%20mount/):
 	- Restrict over permissive containers using something such as [[admission controller]]s
 	- Restrict file and directory permissions by ensuring mounts are read only
-	- Restrict containers using linux security modules such as [[AppArmor]] or [[SELinux]]
+	- Restrict containers using linux security modules such as AppArmor (more details below) or [[SELinux]]
 	- Ensure that pods meet defined [[pod security standards]]. Baseline or restricted will stop volume mounts.
 
+## AppArmor
+We can prevent mounting the host filesystem from the container using AppArmor profiles. This allows us to restrict container capabilities available, such as preventing file writes and mount operations used by attackers to perform container breakouts (e.g. with the [peirates](https://github.com/inguardians/peirates) Kubernetes penetration tool).
+```
+#include <tunables/global>
+
+profile k8s-apparmor-example-deny-write flags=(attach_disconnected) {
+  #include <abstractions/base>
+
+  file,
+
+  # Deny all file writes.
+  deny /** w,
+}
+```
 > Pull requests needed ❤️ 
