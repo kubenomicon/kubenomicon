@@ -9,10 +9,24 @@ To demonstrate that we can reach this pod from the `dmz` namespace, the command 
 
 
 # Defending
-This can be "fixed" by implementing network policies
-> Pull requests needed ❤️ 
+This can be "fixed" by implementing network policies. In this example, we only allow traffic into the `default` namespace from the same namespace, therefore blocking cross-namespace traffic. This means that the `tcpdump` pod in the `dmz` namespace, can no longer communicate with the `my-nginx-pod` pod
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-cross-namespace
+  namespace: default
+spec:
+  podSelector: {}  # Applies to all pods in the namespace
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector: {}  # Only allow traffic from pods in the same namespace
+```
 
 # References and resources
+- [Understanding Kubernetes Network Policies](https://editor.networkpolicy.io/)
 - [Kubernetes Networking](https://www.tigera.io/learn/guides/kubernetes-networking/)
 - [Kubernetes Networking Fundamentals](https://opensource.com/article/22/6/kubernetes-networking-fundamentals)
 - [Kubernetes Threat Matrix](https://kubernetes-threat-matrix.redguard.ch/lateral-movement/cluster-internal-networking/)
