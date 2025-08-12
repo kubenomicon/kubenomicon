@@ -24,5 +24,8 @@ After that, the image will be pushed to the container registry. Assuming the ima
 ![](../images/Pasted%20image%2020240404162845.png)
 
 # Defending
-> Pull requests needed ❤️
+This attack relies on the Kubernetes cluster being configured to pull container images from the registry without validation. We can add validation in the form of: 
+
+- **Allowlisted Container Images**: Using policy-as-code tools like [Open Policy Agent](https://q4us.dev/kubernetes-security-hardening-image-whitelisting/#:~:text=parameters%3A%0A%20%C2%A0%C2%A0%20images%3A%0A%20%C2%A0%C2%A0%C2%A0%C2%A0%20%23%20Images,weave%2Dnpc%3Alatest) we can define and enforce standards for the workloads that can be run in a cluster. 
+- **Kubernetes Admission Controller**: If we are generating provenance during the build phase of our software development lifecycle, we can use [Kubernetes Admission Controllers](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/enforcing-artifact-attestations-with-a-kubernetes-admission-controller#about-image-verification) to verify a container image was built via your build process, and deny running container images in the registry that cannot prove this. 
 

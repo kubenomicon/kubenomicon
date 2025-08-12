@@ -1,5 +1,5 @@
 # New container
-Launching a new container in a kubernetes cluster is an extermely powerful permission. Launching a new container can be used to attack other pods in the cluster in a few different ways. If you're allowed to specify your own pod manifest, you have lots of options for how to escalate privielges and move laterally into other namespaces. Additionally, any secrets in a namespace that allows for pods to be created can be compromised as they can be mounted into the pods in cleartext using [Credential Access-> Container Service Account](../Credential_access/Container_service_account.md). 
+Launching a new container in a kubernetes cluster is an extermely powerful permission. Launching a new container can be used to attack other pods in the cluster in a few different ways. If you're allowed to specify your own pod manifest, you have lots of options for how to escalate privileges and move laterally into other namespaces. Additionally, any secrets in a namespace that allows for pods to be created can be compromised as they can be mounted into the pods in cleartext using [Credential Access-> Container Service Account](../Credential_access/Container_service_account.md). 
 
 The following manifest can be deployed into the cluster using `kubectl apply -f <manfiest_name>.yaml`
 ```yaml
@@ -60,4 +60,25 @@ After the manifest has been applied, the environment variables are accessible in
 # Defending
 Use RBAC to ensure that pods cannot be created unless absolutely necessary. Secrets are scoped to namespaces so ensuring namespaces are properly used is important. 
 
-> Pull requests needed ❤️ 
+The capability to create new containers from within a compromised container may arise from an exposed Docker socket mounted to the breached container, e.g.
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mounted-docker-pod
+spec:
+  containers:
+  - name: mycontainer
+    image: nginx
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-sock-volume
+  volumes:
+    - name: docker-sock-volume
+      hostPath:
+        path: /var/run/docker.sock
+        type: File
+```
+
+We can prevent container images being deployed to our cluster that mount the docker socket with [Kubernetes Admission Controllers](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/)
+
